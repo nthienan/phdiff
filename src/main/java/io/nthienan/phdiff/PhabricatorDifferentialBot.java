@@ -1,12 +1,12 @@
 package io.nthienan.phdiff;
 
-import io.nthienan.phdiff.comment.GlobalCommenter;
-import io.nthienan.phdiff.comment.CommentBuilder;
 import io.nthienan.phdiff.issue.IssueComparator;
+import io.nthienan.phdiff.report.GlobalReportBuilder;
 import org.sonar.api.batch.postjob.PostJob;
 import org.sonar.api.batch.postjob.PostJobContext;
 import org.sonar.api.batch.postjob.PostJobDescriptor;
 import org.sonar.api.batch.postjob.issue.PostJobIssue;
+import org.sonar.api.config.Settings;
 import org.sonar.api.utils.log.Logger;
 import org.sonar.api.utils.log.Loggers;
 
@@ -18,16 +18,18 @@ import java.util.stream.StreamSupport;
  *
  * @author nthienan
  */
-public class NotificationPostJob implements PostJob {
+public class PhabricatorDifferentialBot implements PostJob {
 
-    private static final Logger LOG = Loggers.get(NotificationPostJob.class);
+    private static final Logger LOG = Loggers.get(PhabricatorDifferentialBot.class);
 
     private static final Comparator<PostJobIssue> ISSUE_COMPARATOR = new IssueComparator();
 
-    private final CommentBuilder reportBuilder;
+    private final GlobalReportBuilder reportBuilder;
+    private Settings settings;
 
-    public NotificationPostJob(CommentBuilder reportBuilder) {
+    public PhabricatorDifferentialBot(GlobalReportBuilder reportBuilder, Settings settings) {
         this.reportBuilder = reportBuilder;
+        this.settings = settings;
     }
 
     @Override
@@ -39,17 +41,13 @@ public class NotificationPostJob implements PostJob {
 
     @Override
     public void execute(PostJobContext context) {
-        GlobalCommenter commenter = new GlobalCommenter(this.reportBuilder);
         // issues are not accessible when the mode "issues" is not enabled
         if (context.analysisMode().isIssues()) {
             StreamSupport.stream(context.issues().spliterator(), false)
                 .filter(PostJobIssue::isNew)
                 .sorted(ISSUE_COMPARATOR)
-                .forEach(commenter::process);
+                .forEach(reportBuilder::add);
         }
-        if(commenter.hasNewIssue()) {
-            String markdown = commenter.formatForMarkdown();
-            LOG.error(String.format("Markdown: %s", markdown));
-        }
+        LOG.error(reportBuilder.buildReport());
     }
 }

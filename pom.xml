@@ -48,7 +48,6 @@
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
       <version>2.6</version>
-      <scope>provided</scope>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
@@ -97,7 +96,7 @@
         </configuration>
       </plugin>
       <plugin>
-        <!-- UTF-8 bundles are not supported by Java, so they must be converted during build -->
+        <!-- UTF-8 bundles are not supported by Java, so they must be converted durbuildReportuild -->
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>native2ascii-maven-plugin</artifactId>
         <version>1.0-beta-1</version>

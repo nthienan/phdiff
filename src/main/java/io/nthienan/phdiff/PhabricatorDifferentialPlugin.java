@@ -1,7 +1,7 @@
 package io.nthienan.phdiff;
 
-import io.nthienan.phdiff.comment.MarkDownCommentBuilder;
-import io.nthienan.phdiff.comment.MarkDownUtils;
+import io.nthienan.phdiff.report.RemarkGlobalReportBuilder;
+import io.nthienan.phdiff.report.RemarkupUtils;
 import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
@@ -50,10 +50,10 @@ public class PhabricatorDifferentialPlugin implements Plugin {
     @Override
     public void define(Context context) {
         context.addExtensions(
-            NotificationPostJob.class,
+            PhabricatorDifferentialBot.class,
             Configuration.class,
-            MarkDownCommentBuilder.class,
-            MarkDownUtils.class
+            RemarkGlobalReportBuilder.class,
+            RemarkupUtils.class
         );
     }
 }
