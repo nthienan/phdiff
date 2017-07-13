@@ -51,38 +51,54 @@ public class RemarkGlobalReportBuilder implements GlobalReportBuilder {
             sum.append(bold("SonarQube")).append(" ")
                 .append("analysis reported ")
                 .append(bold(String.valueOf(totalIssues)))
+                .append(" issue")
                 .append(totalIssues > 1 ? "s" : "")
                 .append("\n");
             // Blocker
-            sum.append("  - ")
-                .append(String.valueOf(numberOfIssues(Severity.BLOCKER)))
-                .append(" Blocker issue")
-                .append(numberOfIssues(Severity.BLOCKER) > 1 ? "s" : "")
-                .append("(").append(remarkupUtils.icon(Severity.BLOCKER)).append(")\n");
+            int blockerIssues = numberOfIssues(Severity.BLOCKER);
+            if (blockerIssues > 0) {
+                sum.append("  - ")
+                    .append(String.valueOf(blockerIssues))
+                    .append(" Blocker issue")
+                    .append(blockerIssues > 1 ? "s" : "")
+                    .append(" (").append(remarkupUtils.icon(Severity.BLOCKER)).append(")\n");
+            }
             // Critical
-            sum.append("  - ")
-                .append(String.valueOf(numberOfIssues(Severity.CRITICAL)))
-                .append(" Critical issue")
-                .append(numberOfIssues(Severity.CRITICAL) > 1 ? "s" : "")
-                .append("(").append(remarkupUtils.icon(Severity.CRITICAL)).append(")\n");
+            int criticalIssues = numberOfIssues(Severity.CRITICAL);
+            if (criticalIssues > 0) {
+                sum.append("  - ")
+                    .append(String.valueOf(criticalIssues))
+                    .append(" Critical issue")
+                    .append(criticalIssues > 1 ? "s" : "")
+                    .append(" (").append(remarkupUtils.icon(Severity.CRITICAL)).append(")\n");
+            }
             // Major
-            sum.append("  - ")
-                .append(String.valueOf(numberOfIssues(Severity.MAJOR)))
-                .append(" Major issue")
-                .append(numberOfIssues(Severity.MAJOR) > 1 ? "s" : "")
-                .append("(").append(remarkupUtils.icon(Severity.MAJOR)).append(")\n");
+            int majorIssues = numberOfIssues(Severity.MAJOR);
+            if (majorIssues > 0) {
+                sum.append("  - ")
+                    .append(String.valueOf(majorIssues))
+                    .append(" Major issue")
+                    .append(majorIssues > 1 ? "s" : "")
+                    .append(" (").append(remarkupUtils.icon(Severity.MAJOR)).append(")\n");
+            }
             // Minor
-            sum.append("  - ")
-                .append(String.valueOf(numberOfIssues(Severity.MINOR)))
-                .append(" Minor issue")
-                .append(numberOfIssues(Severity.MINOR) > 1 ? "s" : "")
-                .append("(").append(remarkupUtils.icon(Severity.MINOR)).append(")\n");
+            int minorIssues = numberOfIssues(Severity.MINOR);
+            if (minorIssues > 0) {
+                sum.append("  - ")
+                    .append(String.valueOf(minorIssues))
+                    .append(" Minor issue")
+                    .append(minorIssues > 1 ? "s" : "")
+                    .append(" (").append(remarkupUtils.icon(Severity.MINOR)).append(")\n");
+            }
             // Info
-            sum.append("  - ")
-                .append(String.valueOf(numberOfIssues(Severity.INFO)))
-                .append(" Info issue")
-                .append(numberOfIssues(Severity.INFO) > 1 ? "s" : "")
-                .append("(").append(remarkupUtils.icon(Severity.INFO)).append(")\n");
+            int infoIssues = numberOfIssues(Severity.INFO);
+            if (infoIssues > 0) {
+                sum.append("  - ")
+                    .append(String.valueOf(infoIssues))
+                    .append(" Info issue")
+                    .append(infoIssues > 1 ? "s" : "")
+                    .append(" (").append(remarkupUtils.icon(Severity.INFO)).append(")\n");
+            }
         } else {
             sum.append("You are great developer.\n")
                 .append(bold("SonarQube"))

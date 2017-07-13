@@ -56,9 +56,9 @@ public class RemarkupUtils {
 
     public static String link(String url, String title) {
         if (StringUtils.isNotBlank(title)) {
-            return String.format("[[%s|%s]]", encodeForUrl(url), title);
+            return String.format("[[%s|%s]]", url, title);
         }
-        return encodeForUrl(url);
+        return url;
     }
 
     public static String encodeForUrl(String url) {
@@ -92,7 +92,9 @@ public class RemarkupUtils {
     }
 
     public String source(String componentKey, int line) {
-        return String.format("%s - %s:", italics(String.valueOf(line)), code(componentKey.replace(projectKey, "")));
+        return String.format("%s - %s:",
+            italics(String.valueOf(String.format("Line %s", line))),
+            code(componentKey.replace(projectKey, "").substring(1)));
     }
 
     public String message(String message) {
@@ -100,7 +102,8 @@ public class RemarkupUtils {
     }
 
     public String rule(String ruleKey) {
-        return link(String.format("%s/coding_rules#rule_key=%s", this.ruleUrlPrefix, ruleKey), "View rule");
+        return link(String.format("%s/coding_rules#rule_key=%s",
+            this.ruleUrlPrefix, encodeForUrl(ruleKey)), "View rule");
     }
 
     public String issue(PostJobIssue issue) {
