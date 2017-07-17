@@ -1,5 +1,6 @@
 package io.nthienan.phdiff;
 
+import io.nthienan.phdiff.differential.Differential;
 import io.nthienan.phdiff.issue.IssueComparator;
 import io.nthienan.phdiff.report.GlobalReportBuilder;
 import org.sonar.api.batch.postjob.PostJob;
@@ -49,5 +50,7 @@ public class PhabricatorDifferentialBot implements PostJob {
                 .forEach(reportBuilder::add);
         }
         LOG.error(reportBuilder.buildReport());
+        Differential differential = new Differential("", "", "");
+        differential.getRevisionID();
     }
 }
