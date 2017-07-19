@@ -1,6 +1,5 @@
 package io.nthienan.phdiff;
 
-import io.nthienan.phdiff.differential.DifferentialRevision;
 import io.nthienan.phdiff.issue.IssueComparator;
 import io.nthienan.phdiff.report.GlobalReportBuilder;
 import org.sonar.api.batch.postjob.PostJob;
@@ -36,8 +35,8 @@ public class PhabricatorDifferentialBot implements PostJob {
     @Override
     public void describe(PostJobDescriptor descriptor) {
         descriptor
-            .name("Phabricator DifferentialRevision Issue Publisher")
-            .requireProperty(PhabricatorDifferentialPlugin.PHID);
+            .name("Phabricator Differential Issue Publisher")
+            .requireProperty(PhabricatorDifferentialPlugin.DIFF_ID);
     }
 
     @Override

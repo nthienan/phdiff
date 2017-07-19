@@ -6,7 +6,7 @@ import java.util.*
  * Created on 17-Jul-17.
  * @author nthienan
  */
-class DifferentialRevision(var id: String, var phid: String) {
+class Revision(var id: String, var phid: String) {
     var title: String = ""
     var uri: String = ""
     var dateCreated: Date? = null
