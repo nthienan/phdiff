@@ -1,6 +1,7 @@
 package io.nthienan.phdiff;
 
 import io.nthienan.phdiff.report.RemarkGlobalReportBuilder;
+import io.nthienan.phdiff.report.RemarkupInlineReportBuilder;
 import io.nthienan.phdiff.report.RemarkupUtils;
 import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
@@ -14,7 +15,7 @@ import org.sonar.api.PropertyType;
  */
 @Properties({
     @Property(
-        key = PhabricatorDifferentialPlugin.PHABRICATOR_HOST,
+        key = PhabricatorDifferentialPlugin.PHABRICATOR_URL,
         name = "Phabricator URL",
         defaultValue = "http://localhost",
         description = "URL to access Phabricator.",
@@ -32,28 +33,22 @@ import org.sonar.api.PropertyType;
         name = "DIFF_ID",
         description = "Diff ID",
         global = false
-    ),
-    @Property(
-        key = PhabricatorDifferentialPlugin.PHID,
-        name = "PHID",
-        description = "Phabricator ID",
-        global = false
     )
 })
 public class PhabricatorDifferentialPlugin implements Plugin {
 
-    public static final String PHABRICATOR_HOST = "sonar.phdiff.phabricatorUrl";
+    public static final String PHABRICATOR_URL = "sonar.phdiff.phabricatorUrl";
     public static final String CONDUIT_TOKEN = "sonar.phdiff.conduitToken";
     public static final String DIFF_ID = "sonar.phdiff.diffId";
-    public static final String PHID = "sonar.phdiff.phid";
 
     @Override
     public void define(Context context) {
         context.addExtensions(
-            PhabricatorDifferentialBot.class,
+            PhabricatorDifferentialPostJob.class,
             Configuration.class,
             RemarkGlobalReportBuilder.class,
-            RemarkupUtils.class
+            RemarkupUtils.class,
+            RemarkupInlineReportBuilder.class
         );
     }
 }

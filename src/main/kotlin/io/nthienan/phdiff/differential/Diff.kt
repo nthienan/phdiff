@@ -1,6 +1,6 @@
 package io.nthienan.phdiff.differential
 
-import java.util.*
+import java.util.Date
 
 /**
  * Created on 18/07/2017.
@@ -14,4 +14,8 @@ class Diff {
     var branch: String = ""
     var unitStatus: Int = 0
     var lintStatus: Int = 0
+
+    fun getFormatedRevisionID(): String {
+        return "D$revisionId"
+    }
 }

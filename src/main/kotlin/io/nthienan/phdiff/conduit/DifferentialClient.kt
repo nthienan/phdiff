@@ -25,20 +25,20 @@ class DifferentialClient(val conduitClient: ConduitClient) {
     @Throws(IOException::class, ConduitException::class)
     fun postComment(revisionID: String, message: String, silent: Boolean, action: String): JSONObject {
         var params = JSONObject()
-        params.put("revision_id", revisionID)
-        params.put("action", action)
-        params.put("message", message)
-        params.put("silent", silent)
+            .put("revision_id", revisionID)
+            .put("action", action)
+            .put("message", message)
+            .put("silent", silent)
+            .put("attach_inlines", true)
         return conduitClient.perform("differential.createcomment", params)
     }
 
     /**
      * Fetch a differential from Conduit
      * @return the Conduit API response
-     * @throws IOException if there is a network error talking to Conduit
      * @throws ConduitException if any error is experienced talking to Conduit
      */
-    @Throws(IOException::class, ConduitException::class)
+    @Throws(ConduitException::class)
     fun fetchDiff(diffID: String): Diff {
         val params = JSONObject().put("ids", arrayOf(diffID))
         val query = conduitClient.perform("differential.querydiffs", params)
@@ -67,10 +67,9 @@ class DifferentialClient(val conduitClient: ConduitClient) {
      * @param revisionID the revision ID (e.g. "D1234" without the "D")
      * @param message the string message to post
      * @return the Conduit API response
-     * @throws IOException if there is a network error talking to Conduit
      * @throws ConduitException if any error is experienced talking to Conduit
      */
-    @Throws(ConduitException::class, IOException::class)
+    @Throws(ConduitException::class)
     fun postComment(revisionID: String, message: String): JSONObject {
         return postComment(revisionID, message, true, "none")
     }
@@ -90,6 +89,24 @@ class DifferentialClient(val conduitClient: ConduitClient) {
         // NOTE: When you run this with `arc call-conduit dfferential.getcommitmessage` (from the command-line),
         // it comes back as "response". But it's "result" when running through this conduit API.
         return query.getString("result")
+    }
+
+    /**
+     * Add an inline comment to a Differential revision.
+     * @param diffID ID of the diff
+     * @param file The path of file commented
+     * @param line line number that will be commented
+     * @param message the message
+     * @throws ConduitException
+     */
+    @Throws(ConduitException::class)
+    fun postInlineComment(diffID: String, file: String, line: Int, message: String) {
+        val params = JSONObject().put("diffID", diffID)
+            .put("filePath", file)
+            .put("isNewFile", true)
+            .put("lineNumber", line)
+            .put("content", message)
+        conduitClient.perform("differential.createinline", params)
     }
 
 }

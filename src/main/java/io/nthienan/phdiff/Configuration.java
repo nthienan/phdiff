@@ -1,5 +1,6 @@
 package io.nthienan.phdiff;
 
+import org.sonar.api.CoreProperties;
 import org.sonar.api.batch.BatchSide;
 import org.sonar.api.batch.InstantiationStrategy;
 import org.sonar.api.config.Settings;
@@ -7,7 +8,12 @@ import org.sonar.api.utils.System2;
 import org.sonar.api.utils.log.Logger;
 import org.sonar.api.utils.log.Loggers;
 
-import java.net.*;
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
+import java.net.Proxy;
+import java.net.ProxySelector;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.regex.Pattern;
 
 @BatchSide
@@ -35,8 +41,8 @@ public class Configuration {
         this.gitHttpPattern = Pattern.compile("https?://*\\.*/(.*/.*)\\.git");
     }
 
-    public int diffId() {
-        return settings.getInt(PhabricatorDifferentialPlugin.DIFF_ID);
+    public String diffId() {
+        return settings.getString(PhabricatorDifferentialPlugin.DIFF_ID);
     }
 
     public String conduitToken() {
@@ -44,11 +50,15 @@ public class Configuration {
     }
 
     public boolean isEnabled() {
-        return settings.hasKey(PhabricatorDifferentialPlugin.PHID);
+        return settings.hasKey(PhabricatorDifferentialPlugin.DIFF_ID);
     }
 
     public String phabricatorUrl() {
-        return settings.getString(PhabricatorDifferentialPlugin.PHABRICATOR_HOST);
+        return settings.getString(PhabricatorDifferentialPlugin.PHABRICATOR_URL);
+    }
+
+    public String projectKey() {
+        return settings.getString(CoreProperties.PROJECT_KEY_PROPERTY);
     }
 
     /**

@@ -102,7 +102,7 @@ public class RemarkupUtils {
     }
 
     public String rule(String ruleKey) {
-        return link(String.format("%s/coding_rules#rule_key=%s",
+        return link(String.format("%scoding_rules#rule_key=%s",
             this.ruleUrlPrefix, encodeForUrl(ruleKey)), "View rule");
     }
 
