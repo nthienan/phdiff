@@ -16,13 +16,13 @@ import static io.nthienan.phdiff.report.RemarkupUtils.bold;
  */
 @BatchSide
 @InstantiationStrategy(InstantiationStrategy.PER_BATCH)
-public class RemarkGlobalReportBuilder implements GlobalReportBuilder {
+public class RemarkupGlobalReportBuilder implements GlobalReportBuilder {
 
     private RemarkupUtils remarkupUtils;
     private StringBuilder sb = new StringBuilder();
     private int[] numberOfIssuesBySeverity = new int[Severity.values().length];
 
-    public RemarkGlobalReportBuilder(RemarkupUtils remarkupUtils) {
+    public RemarkupGlobalReportBuilder(RemarkupUtils remarkupUtils) {
         this.remarkupUtils = remarkupUtils;
     }
 
@@ -40,16 +40,17 @@ public class RemarkGlobalReportBuilder implements GlobalReportBuilder {
     }
 
     @Override
-    public String buildReport() {
-        return summarize().append(sb).toString();
+    public String build() {
+        return new StringBuilder(summarize()).append(sb).toString();
     }
 
-    private StringBuilder summarize() {
+    @Override
+    public String summarize() {
         StringBuilder sum = new StringBuilder();
         if (hasIssues()) {
             int totalIssues = totalIssues();
-            sum.append(bold("SonarQube")).append(" ")
-                .append("analysis reported ")
+            sum.append(bold("SonarQube"))
+                .append(" reported ")
                 .append(bold(String.valueOf(totalIssues)))
                 .append(" issue")
                 .append(totalIssues > 1 ? "s" : "")
@@ -99,15 +100,16 @@ public class RemarkGlobalReportBuilder implements GlobalReportBuilder {
                     .append(infoIssues > 1 ? "s" : "")
                     .append(" (").append(remarkupUtils.icon(Severity.INFO)).append(")\n");
             }
+            sum.append("See inline comments for more detail.");
         } else {
-            sum.append("You are great developer.\n")
-                .append(bold("SonarQube"))
-                .append(" analysis reported no issues.");
+            sum.append(bold("SonarQube"))
+                .append(" has found no issue.")
+                .append(" You are great developer.");
         }
-        return sum;
+        return sum.toString();
     }
 
-    public boolean hasIssues() {
+    private boolean hasIssues() {
         return totalIssues() > 0;
     }
 
@@ -115,7 +117,7 @@ public class RemarkGlobalReportBuilder implements GlobalReportBuilder {
         return numberOfIssuesBySeverity[s.ordinal()];
     }
 
-    public int totalIssues() {
+    private int totalIssues() {
         final int[] total = {0};
         Arrays.stream(Severity.values())
             .forEach(severity -> total[0] += numberOfIssues(severity));
@@ -124,6 +126,6 @@ public class RemarkGlobalReportBuilder implements GlobalReportBuilder {
 
     @Override
     public String toString() {
-        return buildReport();
+        return build();
     }
 }

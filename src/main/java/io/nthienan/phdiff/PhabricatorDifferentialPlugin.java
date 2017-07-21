@@ -1,6 +1,6 @@
 package io.nthienan.phdiff;
 
-import io.nthienan.phdiff.report.RemarkGlobalReportBuilder;
+import io.nthienan.phdiff.report.RemarkupGlobalReportBuilder;
 import io.nthienan.phdiff.report.RemarkupInlineReportBuilder;
 import io.nthienan.phdiff.report.RemarkupUtils;
 import org.sonar.api.Plugin;
@@ -46,7 +46,7 @@ public class PhabricatorDifferentialPlugin implements Plugin {
         context.addExtensions(
             PhabricatorDifferentialPostJob.class,
             Configuration.class,
-            RemarkGlobalReportBuilder.class,
+            RemarkupGlobalReportBuilder.class,
             RemarkupUtils.class,
             RemarkupInlineReportBuilder.class
         );

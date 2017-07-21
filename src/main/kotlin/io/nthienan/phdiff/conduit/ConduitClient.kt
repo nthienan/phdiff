@@ -8,6 +8,7 @@ import org.apache.http.client.methods.HttpPost
 import org.apache.http.impl.client.HttpClientBuilder
 import org.apache.http.message.BasicNameValuePair
 import org.json.JSONObject
+import org.sonar.api.utils.log.Loggers
 import java.net.URL
 import java.util.ArrayList
 
@@ -15,6 +16,8 @@ import java.util.ArrayList
  * Created on 17-Jul-17.
  * @author nthienan
  */
+val LOG = Loggers.get(ConduitClient::class.java)
+
 class ConduitClient(var url: String, var token: String) {
 
     fun perform(action: String, params: JSONObject): JSONObject {
@@ -22,6 +25,7 @@ class ConduitClient(var url: String, var token: String) {
         val postRequest = makeRequest(action, params)
         val response = httpClient.execute(postRequest)
         val responseBody = IOUtils.toString(response.entity.content, Charsets.UTF_8)
+        LOG.debug("$url responses: $responseBody")
         if (response.statusLine.statusCode != HttpStatus.SC_OK) {
             throw ConduitException(responseBody, response.statusLine.statusCode)
         }

@@ -24,7 +24,7 @@ class RemarkupInlineReportBuilder(val remarkupUtils: RemarkupUtils) : InlineRepo
         issue?.let { issue ->
             str = StringBuilder().append(remarkupUtils.icon(issue.severity()))
                 .append(" ").append(remarkupUtils.message(issue.message()))
-                .append(" ").append(remarkupUtils.rule(issue.ruleKey().rule()))
+                .append(" ").append(remarkupUtils.rule(issue.ruleKey().toString()))
                 .toString()
         }
         return str

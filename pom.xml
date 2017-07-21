@@ -6,7 +6,7 @@
 
   <groupId>io.nthienan</groupId>
   <artifactId>phdiff</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>0.1.0</version>
   <!-- This is important for sonar-packaging-maven-plugin -->
   <packaging>sonar-plugin</packaging>
 
@@ -26,7 +26,14 @@
       <email>nthienan.it@gmail.com</email>
     </developer>
   </developers>
-
+  <url>https://github.com/thienan93/phdiff</url>
+  <issueManagement>
+    <url>https://github.com/thienan93/phdiff/issues</url>
+  </issueManagement>
+  <scm>
+    <url>https://github.com/thienan93/phdiff</url>
+    <connection>scm:git:https://github.com/thienan93/phdiff/issues</connection>
+  </scm>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- Minimal version of SonarQube to support -->
@@ -73,14 +80,6 @@
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <version>2.5</version>
-    </dependency>
-
-
-    <!-- Just for test, should be remove when submitting -->
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
-      <version>1.5.4.RELEASE</version>
     </dependency>
 
     <dependency>

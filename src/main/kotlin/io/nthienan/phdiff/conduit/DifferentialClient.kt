@@ -55,11 +55,9 @@ class DifferentialClient(val conduitClient: ConduitClient) {
         val diff = Diff()
         diff.id = diffJsonObj.get("id").toString()
         diff.revisionId = diffJsonObj.getString("revisionID")
-//        diff.branch = diffJsonObj.getString("branch")
         diff.dateCreated = Date(diffJsonObj.getLong("dateCreated"))
         diff.dateModified = Date(diffJsonObj.getLong("dateModified"))
         return diff
-
     }
 
     /**

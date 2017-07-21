@@ -26,6 +26,8 @@ public interface GlobalReportBuilder {
      *
      * @return String in format
      */
-    String buildReport();
+    String build();
+
+    String summarize();
 
 }

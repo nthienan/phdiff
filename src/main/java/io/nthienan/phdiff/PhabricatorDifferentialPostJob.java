@@ -28,14 +28,14 @@ public class PhabricatorDifferentialPostJob implements PostJob {
 
     private static final Comparator<PostJobIssue> ISSUE_COMPARATOR = new IssueComparator();
 
-    private final GlobalReportBuilder reportBuilder;
+    private final GlobalReportBuilder globalReportBuilder;
     private final InlineReportBuilder inlineReportBuilder;
     private final String projectKey;
     private final Configuration configuration;
     private DifferentialClient differentialClient;
 
-    public PhabricatorDifferentialPostJob(GlobalReportBuilder reportBuilder, InlineReportBuilder inlineReportBuilder, Configuration configuration) {
-        this.reportBuilder = reportBuilder;
+    public PhabricatorDifferentialPostJob(GlobalReportBuilder globalReportBuilder, InlineReportBuilder inlineReportBuilder, Configuration configuration) {
+        this.globalReportBuilder = globalReportBuilder;
         this.inlineReportBuilder = inlineReportBuilder;
         this.configuration = configuration;
         String url = this.configuration.phabricatorUrl();
@@ -63,20 +63,19 @@ public class PhabricatorDifferentialPostJob implements PostJob {
                     .filter(i -> i.inputComponent().isFile())
                     .sorted(ISSUE_COMPARATOR)
                     .forEach(i -> {
-                        reportBuilder.add(i);
+                        globalReportBuilder.add(i);
                         String ic = inlineReportBuilder.issue(i).build();
-                        LOG.error(ic);
                         String filePath = i.componentKey().replace(projectKey, "").substring(1);
-                        LOG.error(filePath);
                         try {
                             differentialClient.postInlineComment(diffID, filePath, i.line(), ic);
+                            LOG.debug("Comment " + ic + " has been published");
                         } catch (ConduitException e) {
                             LOG.error(e.getMessage());
                         }
                     });
             }
-            LOG.error(reportBuilder.buildReport());
-            differentialClient.postComment(diff.getRevisionId(), reportBuilder.buildReport());
+            differentialClient.postComment(diff.getRevisionId(), globalReportBuilder.summarize());
+            LOG.info("Analysis result has been published to your differential revision");
         } catch (ConduitException e) {
             LOG.error(e.getMessage());
         }
