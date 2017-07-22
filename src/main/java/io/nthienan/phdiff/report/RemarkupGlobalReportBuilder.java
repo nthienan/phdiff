@@ -34,7 +34,7 @@ public class RemarkupGlobalReportBuilder implements GlobalReportBuilder {
 
     @Override
     public GlobalReportBuilder add(PostJobIssue issue) {
-        numberOfIssuesBySeverity[(issue.severity().ordinal())] += 1;
+        numberOfIssuesBySeverity[issue.severity().ordinal()] += 1;
         sb.append(remarkupUtils.issue(issue));
         return this;
     }
