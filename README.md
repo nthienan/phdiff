@@ -95,5 +95,7 @@ If your Jenkins instance is exposed to the internet, make sure to install the [B
 ### Contribute
 Please open all pull requests and issues against [https://github.com/thienan93/phdiff](https://github.com/thienan93/phdiff)
 
+Fixing SonarQube issues of this plugin at [sonarcloud.io](https://sonarcloud.io/dashboard?id=io.nthienan%3Aphdiff)
+
 ### License
 [Apache License, Version 2.0](LICENSE)
