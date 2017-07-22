@@ -1,4 +1,5 @@
 # Phabricator Differential Plugin 
+[![Build Status](https://api.travis-ci.org/thienan93/phdiff.svg?branch=master)](https://travis-ci.org/thienan93/phdiff)
 
 The Phabricator Differential plugin provides integration with Phabricator. It allows SonarQube to analytic and report issues on differential revision without pushing results to SonarQube. Any issues that are found are published as comments on the revision.
 The plugin performs the following operations:
