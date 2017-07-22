@@ -15,7 +15,6 @@ The plugin performs the following operations:
   - SonarQube Server must be up and running. 
   - Minimal SonarQube Version: 5.6
   - The Phabricator Differential plugin is installed on SonarQube Server.
-Phabricator configure
   - A Jenkins server is installed
 
 - **Create SonarQube bot**
