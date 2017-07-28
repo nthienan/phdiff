@@ -6,7 +6,7 @@
 
   <groupId>io.nthienan</groupId>
   <artifactId>phdiff</artifactId>
-  <version>0.1.0</version>
+  <version>0.1.1</version>
   <!-- This is important for sonar-packaging-maven-plugin -->
   <packaging>sonar-plugin</packaging>
 
