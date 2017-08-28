@@ -49,7 +49,7 @@ The plugin performs the following operations:
 - **Jenkins job**
 1. Navigate to the Jenkins job you want to integrate with Phabricator.
 2. Click the **Configure** button.
-3. Click the **Add Parameter** button and select **String Parrameter**.
+3. Click the **Add Parameter** button and select **String Parameter**.
 4. Enter `DIFF_ID` in the **Name** field of the parameter.
 5. Navigate to the **Build** section.
 6. Click the **Add build step** button and select Maven or Gradle.
