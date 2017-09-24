@@ -11,6 +11,13 @@ The plugin performs the following operations:
 
 ![inline-comments.png](docs/images/inline-comments.png)
 
+### Installation
+**phdiff** is not published to Update Center yet, so follow these steps to install:
+- Clone this repo
+- Run: `mvn clean package`
+- Copy `target/phdiff-<version>.jar` to `$SONAR_HOME/extensions/plugins`
+- Restart SonarQube
+
 ### Configuration
 - **Requirements**
   - SonarQube Server must be up and running. 
