@@ -45,28 +45,32 @@ class PhabricatorDifferentialPostJob(
 
   override fun execute(context: PostJobContext?) {
     val diffID = configuration.diffId()
-    if (context?.analysisMode()?.isIssues ?: false) {
-      StreamSupport.stream(context?.issues()?.spliterator(), false)
-        .filter { it.isNew }
-        .filter { it.inputComponent()?.isFile ?: false }
-        .sorted(issueComparator)
-        .forEach { i ->
-          run {
-            globalReportBuilder.add(i)
-            val ic = inlineReportBuilder.issue(i).build()
-            val filePath = i.componentKey().replace(projectKey, "").substring(1)
-            try {
-              differentialClient.postInlineComment(diffID, filePath, i.line()!!, ic)
-              log.debug("Comment $ic has been published")
-            } catch (e: ConduitException) {
-              log.error(e.message, e)
-            }
-
-          }
-        }
-    }
     try {
       val diff = differentialClient.fetchDiff(diffID)
+      if (context?.analysisMode()?.isIssues ?: false) {
+        StreamSupport.stream(context?.issues()?.spliterator(), false)
+          .filter { it.isNew }
+          .filter { it.inputComponent()?.isFile ?: false }
+          .sorted(issueComparator)
+          .forEach { i ->
+            run {
+              globalReportBuilder.add(i)
+              val ic = inlineReportBuilder.issue(i).build()
+              val filePath = i.componentKey().replace(projectKey, "").substring(1)
+              try {
+                differentialClient.postInlineComment(diffID, filePath, i.line()!!, ic)
+                log.debug("Comment $ic has been published")
+              } catch (e: ConduitException) {
+                if (e.message.equals("Requested file doesn't exist in this revision.")) {
+                  val message = "Unmodified file " + filePath + " on line " + i.line() + "\n\n" + ic
+                  differentialClient.postComment(diff.revisionId, message)
+                } else {
+                  log.error(e.message, e)
+                }
+              }
+          }
+        }
+      }
       differentialClient.postComment(diff.revisionId, globalReportBuilder.summarize())
       log.info("Analysis result has been published to your differential revision")
     } catch (e: ConduitException) {
