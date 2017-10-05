@@ -62,8 +62,8 @@ class PhabricatorDifferentialPostJob(
                 log.debug("Comment $ic has been published")
               } catch (e: ConduitException) {
                 if (e.message.equals("Requested file doesn't exist in this revision.")) {
-                  val message = "Unmodified file " + filePath + " on line " + i.line() + "\n\n" + ic
-                  differentialClient.postComment(diff.revisionId, message)
+                  val message = "Unmodified file $filePath  on line ${i.line()}\n\n $ic"
+                  differentialClient.postComment(diff.revisionId, message, false)
                 } else {
                   log.error(e.message, e)
                 }

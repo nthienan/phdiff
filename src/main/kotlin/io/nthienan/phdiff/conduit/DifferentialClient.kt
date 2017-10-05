@@ -18,18 +18,19 @@ class DifferentialClient(val conduitClient: ConduitClient) {
    * @param message the content of the comment
    * @param silent whether or not to trigger an email
    * @param action phabricator comment action, e.g. 'resign', 'reject', 'none'
+   * @param attachInlines whether attach inline comments or not
    * @return the Conduit API response
    * @throws IOException if there is a network error talking to Conduit
    * @throws ConduitException if any error is experienced talking to Conduit
    */
   @Throws(IOException::class, ConduitException::class)
-  fun postComment(revisionID: String, message: String, silent: Boolean, action: String): JSONObject {
-    var params = JSONObject()
+  fun postComment(revisionID: String, message: String, silent: Boolean, action: String, attachInlines: Boolean = true): JSONObject {
+    val params = JSONObject()
       .put("revision_id", revisionID)
       .put("action", action)
       .put("message", message)
       .put("silent", silent)
-      .put("attach_inlines", true)
+      .put("attach_inlines", attachInlines)
     return conduitClient.perform("differential.createcomment", params)
   }
 
@@ -64,12 +65,13 @@ class DifferentialClient(val conduitClient: ConduitClient) {
    * Post a comment on the differential
    * @param revisionID the revision ID (e.g. "D1234" without the "D")
    * @param message the string message to post
+   * @param attachInlines whether attach inline comments or not
    * @return the Conduit API response
    * @throws ConduitException if any error is experienced talking to Conduit
    */
   @Throws(ConduitException::class)
-  fun postComment(revisionID: String, message: String): JSONObject {
-    return postComment(revisionID, message, false, "none")
+  fun postComment(revisionID: String, message: String, attachInlines: Boolean = true): JSONObject {
+    return postComment(revisionID, message, false, "none", attachInlines)
   }
 
   /**
