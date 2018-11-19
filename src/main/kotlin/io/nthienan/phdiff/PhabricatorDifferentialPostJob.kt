@@ -56,7 +56,7 @@ class PhabricatorDifferentialPostJob(
             run {
               globalReportBuilder.add(i)
               val ic = inlineReportBuilder.issue(i).build()
-              val filePath = i.componentKey().replace(projectKey, "").substring(1)
+              val filePath = i.inputComponent().toString()
               try {
                 differentialClient.postInlineComment(diffID, filePath, i.line()!!, ic)
                 log.debug("Comment $ic has been published")
